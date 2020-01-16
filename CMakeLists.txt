@@ -7,7 +7,7 @@ else()
     project(coursework VERSION 0.0.1)
 endif()
 
-set(USE_TEST ON)
+set(USE_TEST OFF)
 
 # boost dependensies
 if (USE_TEST)
