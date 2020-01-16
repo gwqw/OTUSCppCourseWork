@@ -13,10 +13,6 @@ struct CalcResult {
 
 using ResultHolder = std::shared_ptr<CalcResult>;
 
-struct TaskInput {
-    std::size_t task_size = 0;
-};
-
 class ITaskGenerator {
 public:
     virtual ~ITaskGenerator() = default;
@@ -24,6 +20,10 @@ public:
     virtual CalcResult taskCalculation(std::size_t task_num) = 0;
 };
 using TaskGeneratorHolder = std::unique_ptr<ITaskGenerator>;
+
+struct TaskInput {
+    std::size_t task_size = 0;
+};
 
 class RandomTaskGenerator : public ITaskGenerator {
 public:
