@@ -1,6 +1,7 @@
 #include "task_generator.h"
 
 #include <stdexcept>
+#include <cmath>
 
 using namespace std;
 
@@ -21,11 +22,16 @@ CalcResult RandomTaskGenerator::taskCalculation(std::size_t task_num) {
     for (size_t i = 0; i < task_num+1; ++i) {
         double value = 1;
         for (int j = 0; j < task_input_.complexity; ++j) {
-            value *= uniform_distribution_(random_engine_);
+            //value *= uniform_distribution_(random_engine_);
+            value *= exp(double(rand())/(RAND_MAX + 1u));
         }
         res.line[i] = value;
     }
     return res;
+}
+
+std::size_t RandomTaskGenerator::getTasksNumber() const {
+    return task_input_.task_size;
 }
 
 

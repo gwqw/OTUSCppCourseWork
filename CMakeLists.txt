@@ -8,14 +8,19 @@ else()
 endif()
 
 set(USE_TEST OFF)
+find_package(Threads REQUIRED)
 
 # boost dependensies
-if (USE_TEST)
-    find_package(Boost COMPONENTS unit_test_framework REQUIRED)
-endif()
+find_package(Boost COMPONENTS unit_test_framework system REQUIRED)
 
 # source
-set(SOURCE task_generator.cpp task_generator.h response_calculator.cpp response_calculator.h result_saver.cpp result_saver.h)
+set(SOURCE
+        task_generator.cpp task_generator.h
+        response_calculator.cpp response_calculator.h
+        result_saver.cpp result_saver.h
+        thread_pool.cpp thread_pool.h
+        project_config.h
+)
 set(EXE_SOURCE main.cpp ${SOURCE})
 if (USE_TEST)
     set(TEST_SOURCE test_course.cpp ${SOURCE})
@@ -49,6 +54,10 @@ set_target_properties(${EXE_NAME} ${TEST_NAME} PROPERTIES
     COMPILE_OPTIONS ${CMP_OPTIONS}
 )
 
+target_include_directories(${EXE_NAME}
+        PRIVATE ${Boost_INCLUDE_DIR}
+    )
+
 # add boost headers for test
 if (USE_TEST)
     if(UNIX)
@@ -62,6 +71,7 @@ if (USE_TEST)
 endif()
 
 # target linking
+target_link_libraries(${EXE_NAME} Threads::Threads ${Boost_LIBRARIES})
 if (USE_TEST)
     target_link_libraries(${TEST_NAME}
         ${Boost_LIBRARIES}

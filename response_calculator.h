@@ -5,6 +5,16 @@
 
 #include "task_generator.h"
 #include "result_saver.h"
+#include "project_config.h"
+#ifdef MULTITHREAD
+    #ifdef BOOST
+        #include <boost/asio.hpp>
+        namespace ba = boost::asio;
+    #else
+        #include "thread_pool.h"
+        namespace ba;
+    #endif
+#endif
 
 class ResponseCalculator {
 public:
@@ -13,16 +23,22 @@ public:
     {}
     
     void run();
-    
-    bool calulateNextLine();
-    
+
     void subscribe(SubscriberHolder subscriber);
 private:
+    static constexpr int THREADS_NUM = 4;
     std::vector<SubscriberHolder> subscribers_;
     TaskGeneratorHolder task_generator_;
+#ifdef MULTITHREAD
+ #ifdef BOOST
+    ba::thread_pool thread_pool_{THREADS_NUM};
+ #else
+    ThreadPool thread_pool_{THREADS_NUM};
+ #endif
+#endif
     
     // methods
-    void notify(CalcResult calc_result);
+    void notify(CalcResult calc_result) const;
 };
 
 template <typename Subscriber, typename ... Args>

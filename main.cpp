@@ -13,7 +13,7 @@ int main(int argc, char* argv[]) {
         cout << "course_work -- multithreaded task manager\n"
                 "course_work <tasks_number> [<complexity>]\n"
                 "tasks_number -- 1024, 2048, 4096, 8192, 16384\n"
-                "comlexity -- multiplier for every task: 10 - 50, default = 10" << endl;
+                "comlexity -- multiplier for every task: 30 - 150, default = 30" << endl;
         return 0;
     }
 
@@ -22,7 +22,7 @@ int main(int argc, char* argv[]) {
         if (tasks_number > 60'000) {
             throw invalid_argument("tasks number is too big");
         }
-        int task_complexity = 10;
+        int task_complexity = 30;
         if (argc > 2) {
             task_complexity = stol(argv[2]);
         }

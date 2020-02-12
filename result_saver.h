@@ -7,6 +7,8 @@
 #include <string>
 
 #include "task_generator.h"
+#include "thread_pool.h"
+#include "project_config.h"
 
 class ISubscriber {
 public:
@@ -25,8 +27,10 @@ public:
     void update(ResultHolder calc_result) override;
     
 private:
-    std::vector<ResultHolder> results_;
     std::ofstream file_;
+#ifdef MULTITHREAD
+    ThreadPool thread_pool_{1};
+#endif
 };
 
 class StreamLogger : public ISubscriber {
