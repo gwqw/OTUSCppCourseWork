@@ -19,7 +19,11 @@ CalcResult RandomTaskGenerator::taskCalculation(std::size_t task_num) {
     CalcResult res{task_num};
     res.line.resize(task_input_.task_size);
     for (size_t i = 0; i < task_num+1; ++i) {
-        res.line[i] = uniform_distribution_(random_engine_);
+        double value = 1;
+        for (int j = 0; j < task_input_.complexity; ++j) {
+            value *= uniform_distribution_(random_engine_);
+        }
+        res.line[i] = value;
     }
     return res;
 }

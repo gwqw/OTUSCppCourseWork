@@ -19,3 +19,11 @@ void StreamSaver::update(ResultHolder calc_result) {
     }
     out_ << endl;
 }
+
+void PercentLogger::update(ResultHolder calc_result) {
+    int percent = 100 * calc_result->task_num / tasks_size_;
+    if (percent > cur_percent_) {
+        cur_percent_ = percent;
+        out_ << cur_percent_ << '%' << endl;
+    }
+}

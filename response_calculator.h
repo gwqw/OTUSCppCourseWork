@@ -22,7 +22,7 @@ private:
     TaskGeneratorHolder task_generator_;
     
     // methods
-    void notify(const CalcResult& calc_result);
+    void notify(CalcResult calc_result);
 };
 
 template <typename Subscriber, typename ... Args>

@@ -23,11 +23,12 @@ using TaskGeneratorHolder = std::unique_ptr<ITaskGenerator>;
 
 struct TaskInput {
     std::size_t task_size = 0;
+    int complexity = 1;
 };
 
 class RandomTaskGenerator : public ITaskGenerator {
 public:
-    RandomTaskGenerator(const TaskInput& task_input)
+    explicit RandomTaskGenerator(const TaskInput& task_input)
         : task_input_(task_input)
     {}
     std::optional<std::size_t> getNextTaskNum() override;
