@@ -1,6 +1,6 @@
 #include <iostream>
-
 #include <memory>
+#include <stdexcept>
 
 #include "task_generator.h"
 #include "response_calculator.h"
@@ -19,6 +19,9 @@ int main(int argc, char* argv[]) {
 
     try {
         size_t tasks_number = stol(argv[1]);
+        if (tasks_number > 60'000) {
+            throw invalid_argument("tasks number is too big");
+        }
         int task_complexity = 10;
         if (argc > 2) {
             task_complexity = stol(argv[2]);

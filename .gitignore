@@ -33,6 +33,7 @@
 
 # Directories
 *debug*/
+*release*/
 .git/
 bak/
 .idea/
