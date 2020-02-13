@@ -23,7 +23,8 @@ CalcResult RandomTaskGenerator::taskCalculation(std::size_t task_num) {
         double value = 1;
         for (int j = 0; j < task_input_.complexity; ++j) {
             //value *= uniform_distribution_(random_engine_);
-            value *= exp(double(rand())/(RAND_MAX + 1u));
+//            value *= exp(double(rand())/(RAND_MAX + 1u));
+            value *= exp(double(i + j) / (task_input_.complexity + task_num));
         }
         res.line[i] = value;
     }

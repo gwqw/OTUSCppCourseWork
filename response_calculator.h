@@ -12,7 +12,6 @@
         namespace ba = boost::asio;
     #else
         #include "thread_pool.h"
-        namespace ba;
     #endif
 #endif
 
@@ -26,7 +25,7 @@ public:
 
     void subscribe(SubscriberHolder subscriber);
 private:
-    static constexpr int THREADS_NUM = 4;
+    static constexpr int THREADS_NUM = 7;
     std::vector<SubscriberHolder> subscribers_;
     TaskGeneratorHolder task_generator_;
 #ifdef MULTITHREAD

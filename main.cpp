@@ -1,6 +1,7 @@
 #include <iostream>
 #include <memory>
 #include <stdexcept>
+#include <thread>
 
 #include "task_generator.h"
 #include "response_calculator.h"
@@ -18,6 +19,7 @@ int main(int argc, char* argv[]) {
     }
 
     try {
+        cout << thread::hardware_concurrency() << endl;
         size_t tasks_number = stol(argv[1]);
         if (tasks_number > 60'000) {
             throw invalid_argument("tasks number is too big");
