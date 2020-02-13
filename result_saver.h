@@ -5,6 +5,8 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <thread>
+#include <condition_variable>
 
 #include "task_generator.h"
 #include "thread_pool.h"
@@ -20,16 +22,20 @@ using SubscriberHolder = std::unique_ptr<ISubscriber>;
 
 class ResultSaver : public ISubscriber {
 public:
-    explicit ResultSaver(const std::string& filename) 
-        : file_(filename, std::ios_base::binary) 
-    {}
+    explicit ResultSaver(std::size_t tasks_size, const std::string& filename);
+    ~ResultSaver() override;
     
     void update(ResultHolder calc_result) override;
     
 private:
+    std::size_t tasks_size_ = 0;
     std::ofstream file_;
 #ifdef MULTITHREAD
-    ThreadPool thread_pool_{1};
+    //ThreadPool thread_pool_{1};
+    std::mutex cv_m_;
+    std::condition_variable condition_;
+    std::thread thread_;
+    std::vector<ResultHolder> results;
 #endif
 };
 

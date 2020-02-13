@@ -19,7 +19,7 @@ int main(int argc, char* argv[]) {
     }
 
     try {
-        cout << thread::hardware_concurrency() << endl;
+        //cout << thread::hardware_concurrency() << endl;
         size_t tasks_number = stol(argv[1]);
         if (tasks_number > 60'000) {
             throw invalid_argument("tasks number is too big");
@@ -31,7 +31,7 @@ int main(int argc, char* argv[]) {
         auto task_generator = make_unique<RandomTaskGenerator>(TaskInput{tasks_number, task_complexity});
         ResponseCalculator resp_calculator(move(task_generator));
         //createAndSubscribe<PercentLogger>(resp_calculator, tasks_number, cout);
-        createAndSubscribe<ResultSaver>(resp_calculator, "test.mtx");
+        createAndSubscribe<ResultSaver>(resp_calculator, tasks_number, "test.mtx");
         resp_calculator.run();
     } catch (const exception& e) {
         cerr << e.what() << endl;
