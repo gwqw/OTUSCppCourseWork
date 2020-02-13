@@ -6,6 +6,7 @@
 #include "task_generator.h"
 #include "result_saver.h"
 #include "project_config.h"
+
 #ifdef MULTITHREAD
     #ifdef BOOST
         #include <boost/asio.hpp>

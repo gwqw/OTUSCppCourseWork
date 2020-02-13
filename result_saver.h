@@ -39,6 +39,20 @@ private:
 #endif
 };
 
+class PercentLogger : public ISubscriber {
+public:
+    explicit PercentLogger(std::size_t tasks_size, std::ostream& out = std::cout)
+            : tasks_size_(tasks_size), out_(out)
+    {}
+
+    void update(ResultHolder calc_result) override;
+
+private:
+    std::size_t tasks_size_ = 0;
+    std::ostream& out_;
+    int cur_percent_ = 0;
+};
+
 class StreamLogger : public ISubscriber {
 public:
     explicit StreamLogger(std::ostream& out = std::cout)
@@ -61,18 +75,4 @@ public:
     
 private:
     std::ostream& out_;
-};
-
-class PercentLogger : public ISubscriber {
-public:
-    explicit PercentLogger(std::size_t tasks_size, std::ostream& out = std::cout)
-            : tasks_size_(tasks_size), out_(out)
-    {}
-
-    void update(ResultHolder calc_result) override;
-
-private:
-    std::size_t tasks_size_ = 0;
-    std::ostream& out_;
-    int cur_percent_ = 0;
 };

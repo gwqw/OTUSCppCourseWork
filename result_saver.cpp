@@ -16,6 +16,7 @@ ResultSaver::ResultSaver(std::size_t tasks_size, const std::string &filename)
                 return this->results[first_idx] != nullptr;
             });
             lk.unlock();
+
             size_t last_idx = first_idx;
             for (; last_idx < tasks_size_; ++last_idx) {
                 if (results[last_idx] == nullptr) break;
@@ -28,6 +29,7 @@ ResultSaver::ResultSaver(std::size_t tasks_size, const std::string &filename)
             first_idx = last_idx;
         }
     };
+
     thread_ = thread(save_task);
 #endif
 }

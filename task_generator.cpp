@@ -5,15 +5,7 @@
 
 using namespace std;
 
-std::optional<std::size_t> RandomTaskGenerator::getNextTaskNum() {
-    if (cur_counter_ < task_input_.task_size) {
-        return cur_counter_++;
-    } else {
-        return nullopt;
-    }    
-}
-
-CalcResult RandomTaskGenerator::taskCalculation(std::size_t task_num) {
+CalcResult SimpleTaskGenerator::taskCalculation(std::size_t task_num) {
     if (task_num+1 > task_input_.task_size) {
         throw invalid_argument("Task number is greater than number of tasks");
     }
@@ -22,16 +14,14 @@ CalcResult RandomTaskGenerator::taskCalculation(std::size_t task_num) {
     for (size_t i = 0; i < task_num+1; ++i) {
         double value = 1;
         for (int j = 0; j < task_input_.complexity; ++j) {
-            //value *= uniform_distribution_(random_engine_);
-//            value *= exp(double(rand())/(RAND_MAX + 1u));
-            value *= exp(double(i + j) / (task_input_.complexity + task_num));
+            value *= exp(double(i + j) / double(task_input_.complexity + task_num));
         }
         res.line[i] = value;
     }
     return res;
 }
 
-std::size_t RandomTaskGenerator::getTasksNumber() const {
+std::size_t SimpleTaskGenerator::getTasksNumber() const {
     return task_input_.task_size;
 }
 

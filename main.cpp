@@ -28,7 +28,7 @@ int main(int argc, char* argv[]) {
         if (argc > 2) {
             task_complexity = stol(argv[2]);
         }
-        auto task_generator = make_unique<RandomTaskGenerator>(TaskInput{tasks_number, task_complexity});
+        auto task_generator = make_unique<SimpleTaskGenerator>(TaskInput{tasks_number, task_complexity});
         ResponseCalculator resp_calculator(move(task_generator));
         //createAndSubscribe<PercentLogger>(resp_calculator, tasks_number, cout);
         createAndSubscribe<ResultSaver>(resp_calculator, tasks_number, "test.mtx");
