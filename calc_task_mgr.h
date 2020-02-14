@@ -17,6 +17,9 @@
     #endif
 #endif
 
+/**
+ * @brief Manages matrix calculation
+ */
 class CalcTaskMgr {
 public:
     explicit CalcTaskMgr(TaskCalculatorHolder task_generator,

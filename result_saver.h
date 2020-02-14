@@ -23,6 +23,9 @@ public:
 using SubscriberHolder = std::unique_ptr<ISubscriber>;
 
 /* implementation */
+/**
+ * @brief Saves calculation results to file
+ */
 class ResultSaver : public ISubscriber {
 public:
     explicit ResultSaver(std::size_t tasks_size, const std::string& filename);
@@ -41,6 +44,9 @@ private:
 #endif
 };
 
+/**
+ * @brief Outputs completion percents
+ */
 class PercentLogger : public ISubscriber {
 public:
     explicit PercentLogger(std::size_t tasks_size, std::ostream& out = std::cout)
