@@ -3,6 +3,7 @@
 #include <vector>
 #include <memory>
 
+/* interface */
 struct CalcResult {
     std::size_t task_num = 0;
     std::vector<double> line;
@@ -10,24 +11,24 @@ struct CalcResult {
 
 using ResultHolder = std::shared_ptr<CalcResult>;
 
-class ITaskGenerator {
+class ITaskCalculator {
 public:
-    virtual ~ITaskGenerator() = default;
+    virtual ~ITaskCalculator() = default;
     virtual CalcResult taskCalculation(std::size_t task_num) = 0;
     [[nodiscard]] virtual std::size_t getTasksNumber() const = 0;
 };
-using TaskGeneratorHolder = std::unique_ptr<ITaskGenerator>;
+using TaskCalculatorHolder = std::unique_ptr<ITaskCalculator>;
 
 
-// implementation
+/* implementation */
 struct TaskInput {
     std::size_t task_size = 0;
     int complexity = 1;
 };
 
-class SimpleTaskGenerator : public ITaskGenerator {
+class SimpleTaskCalculator : public ITaskCalculator {
 public:
-    explicit SimpleTaskGenerator(const TaskInput& task_input)
+    explicit SimpleTaskCalculator(const TaskInput& task_input)
         : task_input_(task_input)
     {}
 

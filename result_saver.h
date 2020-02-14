@@ -7,11 +7,13 @@
 #include <string>
 #include <thread>
 #include <condition_variable>
+#include <atomic>
 
 #include "task_generator.h"
 #include "thread_pool.h"
 #include "project_config.h"
 
+/* interface */
 class ISubscriber {
 public:
     virtual ~ISubscriber() = default;
@@ -20,6 +22,7 @@ public:
 
 using SubscriberHolder = std::unique_ptr<ISubscriber>;
 
+/* implementation */
 class ResultSaver : public ISubscriber {
 public:
     explicit ResultSaver(std::size_t tasks_size, const std::string& filename);
@@ -31,7 +34,6 @@ private:
     std::size_t tasks_size_ = 0;
     std::ofstream file_;
 #ifdef MULTITHREAD
-    //ThreadPool thread_pool_{1};
     std::mutex cv_m_;
     std::condition_variable condition_;
     std::thread thread_;
@@ -51,6 +53,7 @@ private:
     std::size_t tasks_size_ = 0;
     std::ostream& out_;
     int cur_percent_ = 0;
+    std::atomic<std::size_t> calculated_ = 0;
 };
 
 class StreamLogger : public ISubscriber {

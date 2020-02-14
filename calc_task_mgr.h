@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <utility>
+#include <stdexcept>
 
 #include "task_generator.h"
 #include "result_saver.h"
@@ -16,24 +17,32 @@
     #endif
 #endif
 
-class ResponseCalculator {
+class CalcTaskMgr {
 public:
-    explicit ResponseCalculator(TaskGeneratorHolder task_generator)
-        : task_generator_(std::move(task_generator))
-    {}
+    explicit CalcTaskMgr(TaskCalculatorHolder task_generator,
+                         std::size_t threads_count = 1)
+        : threads_count_(threads_count), task_generator_(std::move(task_generator))
+#ifdef MULTITHREAD
+        , thread_pool_(threads_count)
+#endif
+    {
+        if (threads_count_ == 0) {
+            throw std::invalid_argument("Threads count can't be zero");
+        }
+    }
     
     void run();
 
     void subscribe(SubscriberHolder subscriber);
 private:
-    static constexpr int THREADS_NUM = 7;
+    std::size_t threads_count_ = 1;
     std::vector<SubscriberHolder> subscribers_;
-    TaskGeneratorHolder task_generator_;
+    TaskCalculatorHolder task_generator_;
 #ifdef MULTITHREAD
  #ifdef BOOST
-    ba::thread_pool thread_pool_{THREADS_NUM};
+    ba::thread_pool thread_pool_;
  #else
-    ThreadPool thread_pool_{THREADS_NUM};
+    ThreadPool thread_pool_;
  #endif
 #endif
     
@@ -42,7 +51,7 @@ private:
 };
 
 template <typename Subscriber, typename ... Args>
-void createAndSubscribe(ResponseCalculator& resp_calculator, Args&&...args) {
+void createAndSubscribe(CalcTaskMgr& resp_calculator, Args&&...args) {
     auto s = std::make_unique<Subscriber>(std::forward<Args>(args)...);
     resp_calculator.subscribe(std::move(s));
 }

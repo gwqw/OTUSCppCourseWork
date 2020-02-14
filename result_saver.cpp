@@ -1,5 +1,7 @@
 #include "result_saver.h"
 
+#include <cmath>
+
 using namespace std;
 
 ResultSaver::ResultSaver(std::size_t tasks_size, const std::string &filename)
@@ -51,6 +53,16 @@ ResultSaver::~ResultSaver() {
 #endif
 }
 
+void PercentLogger::update(ResultHolder calc_result) {
+    ++calculated_;
+    int percent =  lround(double(calculated_) / tasks_size_ * 100);
+    if (percent > cur_percent_) {
+        cur_percent_ = percent;
+        out_ << cur_percent_ << "%, ";
+        out_.flush();
+    }
+}
+
 void StreamLogger::update(ResultHolder calc_result) {
     out_ << calc_result->task_num << endl;
 }
@@ -64,10 +76,4 @@ void StreamSaver::update(ResultHolder calc_result) {
     out_ << endl;
 }
 
-void PercentLogger::update(ResultHolder calc_result) {
-    int percent = int(100 * calc_result->task_num / tasks_size_);
-    if (percent > cur_percent_) {
-        cur_percent_ = percent;
-        out_ << cur_percent_ << '%' << endl;
-    }
-}
+

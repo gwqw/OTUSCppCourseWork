@@ -16,7 +16,7 @@ find_package(Boost COMPONENTS unit_test_framework system REQUIRED)
 # source
 set(SOURCE
         task_generator.cpp task_generator.h
-        response_calculator.cpp response_calculator.h
+        calc_task_mgr.cpp calc_task_mgr.h
         result_saver.cpp result_saver.h
         thread_pool.cpp thread_pool.h
         project_config.h
