@@ -4,11 +4,11 @@
 #include <utility>
 #include <stdexcept>
 
-#include "task_generator.h"
+#include "task_generator_interface.h"
 #include "result_saver.h"
 #include "project_config.h"
 
-#ifdef MULTITHREAD
+#ifdef THREADPOOL
     #ifdef BOOST
         #include <boost/asio.hpp>
         namespace ba = boost::asio;
@@ -25,7 +25,7 @@ public:
     explicit CalcTaskMgr(TaskCalculatorHolder task_generator,
                          std::size_t threads_count = 1)
         : threads_count_(threads_count), task_generator_(std::move(task_generator))
-#ifdef MULTITHREAD
+#ifdef THREADPOOL
         , thread_pool_(threads_count)
 #endif
     {
@@ -41,7 +41,7 @@ private:
     std::size_t threads_count_ = 1;
     std::vector<SubscriberHolder> subscribers_;
     TaskCalculatorHolder task_generator_;
-#ifdef MULTITHREAD
+#ifdef THREADPOOL
  #ifdef BOOST
     ba::thread_pool thread_pool_;
  #else

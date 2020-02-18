@@ -7,6 +7,11 @@ else()
     project(coursework VERSION 0.0.1)
 endif()
 
+if (WIN32)
+    # dumb mf-ing boost+mgw sets mgw9 as a compiler
+    set(Boost_COMPILER mgw91)
+endif()
+
 set(USE_TEST OFF)
 find_package(Threads REQUIRED)
 
@@ -16,6 +21,7 @@ find_package(Boost COMPONENTS unit_test_framework system REQUIRED)
 # source
 set(SOURCE
         task_generator.cpp task_generator.h
+        task_generator_interface.h
         calc_task_mgr.cpp calc_task_mgr.h
         result_saver.cpp result_saver.h
         thread_pool.cpp thread_pool.h

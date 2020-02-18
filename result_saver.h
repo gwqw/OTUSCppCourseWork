@@ -9,8 +9,7 @@
 #include <condition_variable>
 #include <atomic>
 
-#include "task_generator.h"
-#include "thread_pool.h"
+#include "task_generator_interface.h"
 #include "project_config.h"
 
 /* interface */
