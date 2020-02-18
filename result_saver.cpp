@@ -42,7 +42,7 @@ void ResultSaver::update(ResultHolder calc_result) {
     results[calc_result->task_num] = move(calc_result);
     condition_.notify_one();
 #else
-    file_.write(reinterpret_cast<char*>(calc_result->line.data()),
+    file_.write(reinterpret_cast<const char*>(calc_result->line.data()),
                 calc_result->line.size() * sizeof(double));
 #endif
 }
