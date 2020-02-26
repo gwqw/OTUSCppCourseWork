@@ -6,6 +6,7 @@
 #include <iostream>
 #include <string>
 #include <thread>
+#include <mutex>
 #include <condition_variable>
 #include <atomic>
 
@@ -40,6 +41,11 @@ private:
     std::condition_variable condition_;
     std::thread thread_;
     std::vector<ResultHolder> results;
+#endif
+#ifdef SAVE_SAME_THREAD
+    std::mutex mtx_;
+    std::size_t first_idx_ = 0;
+    void saveToFile();
 #endif
 };
 

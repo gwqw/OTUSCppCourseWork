@@ -11,6 +11,7 @@ ResultSaver::ResultSaver(std::size_t tasks_size, const std::string &filename)
 #endif
 {
 #ifdef MULTITHREAD
+#ifndef SAVE_SAME_THREAD
     auto save_task = [this, first_idx = size_t(0)]() mutable {
         while (first_idx < tasks_size_) {
             std::unique_lock<std::mutex> lk(this->cv_m_);
@@ -34,22 +35,49 @@ ResultSaver::ResultSaver(std::size_t tasks_size, const std::string &filename)
 
     thread_ = thread(save_task);
 #endif
+#endif
 }
 
 void ResultSaver::update(ResultHolder calc_result) {
 #ifdef MULTITHREAD
     // add calculated line to results
     results[calc_result->task_num] = move(calc_result);
+#ifdef SAVE_SAME_THREAD
+    saveToFile();
+#else
     condition_.notify_one();
+#endif
 #else
     file_.write(reinterpret_cast<const char*>(calc_result->line.data()),
                 calc_result->line.size() * sizeof(double));
 #endif
 }
 
+#ifdef SAVE_SAME_THREAD
+void ResultSaver::saveToFile() {
+    if (mtx_.try_lock()) {
+        size_t last_idx = first_idx_;
+        for (; last_idx < tasks_size_; ++last_idx) {
+            if (results[last_idx] == nullptr) break;
+        }
+        for (size_t i = first_idx_; i < last_idx; ++i) {
+            auto calc_res = move(results[i]);
+            file_.write(reinterpret_cast<char *>(calc_res->line.data()),
+                        calc_res->line.size() * sizeof(double));
+        }
+        first_idx_ = last_idx;
+        mtx_.unlock();
+    }
+}
+#endif
+
 ResultSaver::~ResultSaver() {
 #ifdef MULTITHREAD
+#ifdef SAVE_SAME_THREAD
+    saveToFile();
+#else
     thread_.join();
+#endif
 #endif
 }
 

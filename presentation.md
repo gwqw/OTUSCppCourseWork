@@ -126,9 +126,9 @@
 https://github.com/gwqw/OTUSCppCourseWork
 
 ```c++
-        SimpleTaskCalculator
-            CalcResult taskCalculation(std::size_t task_num)
-            std::size_t getTasksNumber() const
+SimpleTaskCalculator
+    CalcResult taskCalculation(std::size_t task_num)
+    std::size_t getTasksNumber() const
     
 CalcTaskMgr
     CalcTaskMgr(TaskCalculatorHolder task_generator)
