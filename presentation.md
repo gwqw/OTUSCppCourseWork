@@ -149,8 +149,8 @@ CalcResult
 
 
 ```
-[1 0 3 4 5 0 7]
-   ^
+[0 0 3 4 5 0 7]
+     ^     ^   
 ```
 
 
@@ -167,7 +167,7 @@ CalcResult
 
 **Время расчёта**
 
-| task size | treads = 1, s | treads = 2, s | treads = 3, s | treads = 4, s |
+| task size | threads = 1, s | threads = 2, s | threads = 3, s | threads = 4, s |
 | -- | -- | -- | -- | -- |
 | 1024 | 0.459 | 0.235 | 0.162 | 0.132 |
 | 2048 | 1.801 | 0.917 | 0.617 | 0.49 |
@@ -176,7 +176,7 @@ CalcResult
 | 16384 | 112.5 | 57.7 | 38.5 | 31 |
 
 ```
-t = a/treads * N^2 
+t = a/threads * N^2 
 a = 4.34e-7
 ```
 
@@ -188,7 +188,7 @@ a = 4.34e-7
 
 ```
 t = b * N^2 
-b = 7e-8
+b = 6e-8
 ```
 
 
@@ -198,20 +198,67 @@ b = 7e-8
 ```
 t_c / N ~ t_s / N
 b ~ a / threads
-threads ~ a/b ~ 6
+threads ~ a/b ~ 7
 ```
 
 
 
 **Крайние случаи**
 
-https://www.cpubenchmark.net/
+https://www.cpubenchmark.net/singleThread.html
 
 | CPU                         | parrots | max_threads |
 | --------------------------- | ------- | ----------- |
 | Intel Core i5-2300 @ 2.8GHz | 1575    | 6           |
 | AMD Ryzen 5 3600            | 2804    | ~3          |
 | AMD Ryzen 7 PRO 3700        | 3027    | ~3          |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Follow up
+
+- object pool
+
+
+
+
+
+
+
+
+
+
+
 
 
 

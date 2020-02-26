@@ -23,7 +23,8 @@ public:
             if (quit_) {
                 throw std::runtime_error("adding task to stopped threadpool");
             }
-            tasks_.emplace(std::async(std::launch::deferred, std::forward<F>(f), std::forward<Args>(args)...));
+            tasks_.emplace(std::async(std::launch::deferred, std::forward<F>(f),
+                    std::forward<Args>(args)...));
         }
         condition_.notify_one();
     }

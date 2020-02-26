@@ -3,4 +3,4 @@
 #define MULTITHREAD
 //#define BOOST
 //#define THREADPOOL
-#define SAVE_SAME_THREAD
+//#define SAVE_SAME_THREAD

@@ -56,6 +56,7 @@ void ResultSaver::update(ResultHolder calc_result) {
 #ifdef SAVE_SAME_THREAD
 void ResultSaver::saveToFile() {
     if (mtx_.try_lock()) {
+//        lock_guard<mutex> lk(mtx_);
         size_t last_idx = first_idx_;
         for (; last_idx < tasks_size_; ++last_idx) {
             if (results[last_idx] == nullptr) break;

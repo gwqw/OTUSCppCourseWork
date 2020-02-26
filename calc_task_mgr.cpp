@@ -10,7 +10,7 @@ void CalcTaskMgr::run()
 
 #ifdef THREADPOOL
 #ifndef BOOST
-    auto calc_func = [this](size_t first_task_num, size_t tasks_number, size_t threads_count){
+    auto calc_func = [this](size_t first_task_num, size_t tasks_number, size_t threads_count) {
         for (size_t task_num = first_task_num; task_num < tasks_number; task_num += threads_count) {
             auto calc_result = task_generator_->taskCalculation(task_num);
             notify(move(calc_result));
