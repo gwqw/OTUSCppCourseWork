@@ -14,7 +14,7 @@ public:
         : task_input_(task_input)
     {}
 
-    CalcResult taskCalculation(std::size_t task_num) override;
+    ResultHolder taskCalculation(std::size_t task_num) override;
     [[nodiscard]] std::size_t getTasksNumber() const override;
 private:
     TaskInput task_input_;

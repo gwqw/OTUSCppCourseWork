@@ -26,6 +26,7 @@ set(SOURCE
         result_saver.cpp result_saver.h
         thread_pool.cpp thread_pool.h
         project_config.h
+        object_pool.h
 )
 set(EXE_SOURCE main.cpp ${SOURCE})
 if (USE_TEST)

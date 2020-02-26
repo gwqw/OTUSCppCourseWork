@@ -3,20 +3,29 @@
 #include <stdexcept>
 #include <cmath>
 
+#include "object_pool.h"
+
 using namespace std;
 
-CalcResult SimpleTaskCalculator::taskCalculation(std::size_t task_num) {
+ResultHolder SimpleTaskCalculator::taskCalculation(std::size_t task_num) {
     if (task_num+1 > task_input_.task_size) {
         throw invalid_argument("Task number is greater than number of tasks");
     }
-    CalcResult res{task_num};
-    res.line.resize(task_input_.task_size);
+    auto& object_pool = ObjectPool<CalcResult>::getSingletone();
+    auto res = object_pool.allocate();
+    res->task_num = task_num;
+    if (res->line.size() == task_input_.task_size) {
+        fill(res->line.begin(), res->line.end(), 0);
+    } else {
+        res->line.resize(task_input_.task_size);
+    }
+
     for (size_t i = 0; i <= task_num; ++i) {
         double value = 1;
         for (int j = 0; j < task_input_.complexity; ++j) {
             value *= exp(double(i + j) / double(task_input_.complexity + task_num));
         }
-        res.line[i] = value;
+        res->line[i] = value;
     }
     return res;
 }

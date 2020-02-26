@@ -2,6 +2,8 @@
 
 #include <cmath>
 
+#include "object_pool.h"
+
 using namespace std;
 
 ResultSaver::ResultSaver(std::size_t tasks_size, const std::string &filename)
@@ -24,10 +26,12 @@ ResultSaver::ResultSaver(std::size_t tasks_size, const std::string &filename)
             for (; last_idx < tasks_size_; ++last_idx) {
                 if (results[last_idx] == nullptr) break;
             }
+            auto& object_pool = ObjectPool<CalcResult>::getSingletone();
             for (size_t i = first_idx; i < last_idx; ++i) {
                 auto calc_res = move(results[i]);
                 file_.write(reinterpret_cast<char *>(calc_res->line.data()),
                             calc_res->line.size() * sizeof(double));
+                object_pool.deallocate(move(calc_res));
             }
             first_idx = last_idx;
         }
@@ -60,10 +64,12 @@ void ResultSaver::saveToFile() {
         for (; last_idx < tasks_size_; ++last_idx) {
             if (results[last_idx] == nullptr) break;
         }
+        auto& object_pool = ObjectPool<CalcResult>::getSingletone();
         for (size_t i = first_idx_; i < last_idx; ++i) {
             auto calc_res = move(results[i]);
             file_.write(reinterpret_cast<char *>(calc_res->line.data()),
                         calc_res->line.size() * sizeof(double));
+            object_pool.deallocate(move(calc_res));
         }
         first_idx_ = last_idx;
         mtx_.unlock();

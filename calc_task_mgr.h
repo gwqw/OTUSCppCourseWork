@@ -8,15 +8,6 @@
 #include "result_saver.h"
 #include "project_config.h"
 
-#ifdef THREADPOOL
-    #ifdef BOOST
-        #include <boost/asio.hpp>
-        namespace ba = boost::asio;
-    #else
-        #include "thread_pool.h"
-    #endif
-#endif
-
 /**
  * @brief Manages matrix calculation
  */
@@ -25,9 +16,6 @@ public:
     explicit CalcTaskMgr(TaskCalculatorHolder task_generator,
                          std::size_t threads_count = 1)
         : threads_count_(threads_count), task_generator_(std::move(task_generator))
-#ifdef THREADPOOL
-        , thread_pool_(threads_count)
-#endif
     {
         if (threads_count_ == 0) {
             throw std::invalid_argument("Threads count can't be zero");
@@ -41,16 +29,9 @@ private:
     std::size_t threads_count_ = 1;
     std::vector<SubscriberHolder> subscribers_;
     TaskCalculatorHolder task_generator_;
-#ifdef THREADPOOL
- #ifdef BOOST
-    ba::thread_pool thread_pool_;
- #else
-    ThreadPool thread_pool_;
- #endif
-#endif
-    
+
     // methods
-    void notify(CalcResult calc_result) const;
+    void notify(ResultHolder calc_result) const;
 };
 
 template <typename Subscriber, typename ... Args>
