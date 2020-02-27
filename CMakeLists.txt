@@ -12,7 +12,7 @@ if (WIN32)
     set(Boost_COMPILER mgw91)
 endif()
 
-set(USE_TEST OFF)
+set(USE_TEST ON)
 find_package(Threads REQUIRED)
 
 # boost dependensies
@@ -47,6 +47,7 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
   set(CMP_OPTIONS "-Wall;-Wextra;-Wshadow;-Wnon-virtual-dtor;-Wold-style-cast;-Wcast-align;-Wunused;-Woverloaded-virtual;-Wconversion;-Wsign-conversion;-Wduplicated-cond")
   if(CMAKE_BUILD_TYPE MATCHES Debug)
       set(CMP_OPTIONS ${CMP_OPTIONS}";-D_GLIBCXX_DEBUG;-D_GLIBCXX_DEBUG_PEDANTIC")
+      #set(CMP_OPTIONS ${CMP_OPTIONS}";-fsanitize=thread")
       message("debug")
   endif()
 else()
@@ -80,7 +81,7 @@ endif()
 target_link_libraries(${EXE_NAME} Threads::Threads ${Boost_LIBRARIES})
 if (USE_TEST)
     target_link_libraries(${TEST_NAME}
-        ${Boost_LIBRARIES}
+            Threads::Threads ${Boost_LIBRARIES}
     )
 endif()
 

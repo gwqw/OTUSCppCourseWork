@@ -81,12 +81,18 @@ private:
 
 class StreamSaver : public ISubscriber {
 public:
-    explicit StreamSaver(std::ostream& out = std::cout)
-        : out_(out)
-    {}
-    
+    explicit StreamSaver(std::size_t tasks_size, std::ostream& out = std::cout);
+    ~StreamSaver() override;
+
     void update(ResultHolder calc_result) override;
     
 private:
+    std::size_t tasks_size_ = 0;
     std::ostream& out_;
+#ifdef MULTITHREAD
+    std::mutex cv_m_;
+    std::condition_variable condition_;
+    std::thread thread_;
+    std::vector<ResultHolder> results;
+#endif
 };
