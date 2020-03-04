@@ -75,7 +75,9 @@ void ResultSaver::saveToFile() {
 ResultSaver::~ResultSaver() {
 #ifdef MULTITHREAD
 #ifdef SAVE_SAME_THREAD
-    saveToFile();
+    if (first_idx_ != tasks_size_) {
+        saveToFile();
+    }
 #else
     thread_.join();
 #endif
