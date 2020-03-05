@@ -209,9 +209,47 @@ https://www.cpubenchmark.net/singleThread.html
 
 | CPU                         | parrots | max_threads |
 | --------------------------- | ------- | ----------- |
-| Intel Core i5-2300 @ 2.8GHz | 1575    | 6           |
-| AMD Ryzen 5 3600            | 2804    | ~3          |
-| AMD Ryzen 7 PRO 3700        | 3027    | ~3          |
+| Intel Core i5-2300 @ 2.8GHz | 1575    | 7           |
+| AMD Ryzen 5 3600            | 2804    | ~4          |
+| AMD Ryzen 7 PRO 3700        | 3027    | ~4          |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Память
+
+```
+dt = t_s - t_c
+t_s1 = t_s / N
+N_str = dt / t_s1 = (1 - (a/b) / threads)
+```
+
+**Крайние случаи**
+
+```
+32k -> 8Gb
+a/b = 4
+threads = 6
+=>
+2.7 Gb (измерено: 2.3 Gb и 1.9 Gb)
+```
+
+
+
+
 
 
 
