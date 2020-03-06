@@ -234,8 +234,13 @@ https://www.cpubenchmark.net/singleThread.html
 ```
 dt = t_s - t_c
 t_s1 = t_s / N
-N_str = dt / t_s1 = (1 - (a/b) / threads)
+N_str ~ dt / t_s1 = (1 - (a/b) / threads)*N
+a/b = 7 -- мой комп
 ```
+
+
+
+
 
 **Крайние случаи**
 
@@ -243,7 +248,7 @@ N_str = dt / t_s1 = (1 - (a/b) / threads)
 32k -> 8Gb
 a/b = 4
 threads = 6
-=>
+=> N_str ~ N / 3
 2.7 Gb (измерено: 2.3 Gb и 1.9 Gb)
 ```
 
