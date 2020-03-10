@@ -18,6 +18,9 @@ public:
 
     std::shared_ptr<T> allocate();
 
+    template <typename ... Args>
+    std::shared_ptr<T> construct(Args&&... args);
+
     void deallocate(std::shared_ptr<T>&& object);
 
 private:
@@ -32,6 +35,18 @@ std::shared_ptr<T> ObjectPool<T>::allocate() {
     std::lock_guard<std::mutex> lk(mtx_);
     if (free_.empty()) {
         free_.push(std::make_shared<T>());
+    }
+    auto result = std::move(free_.front());
+    free_.pop();
+    return result;
+}
+
+template <typename T>
+template <typename ... Args>
+std::shared_ptr<T> ObjectPool<T>::construct(Args&&... args) {
+    std::lock_guard<std::mutex> lk(mtx_);
+    if (free_.empty()) {
+        free_.push(std::make_shared<T>(std::forward<Args>(args)...));
     }
     auto result = std::move(free_.front());
     free_.pop();

@@ -3,6 +3,7 @@
 #include <cmath>
 
 #include "object_pool.h"
+#include "project_config.h"
 
 using namespace std;
 
@@ -26,12 +27,16 @@ ResultSaver::ResultSaver(std::size_t tasks_size, const std::string &filename)
             for (; last_idx < tasks_size_; ++last_idx) {
                 if (results[last_idx] == nullptr) break;
             }
+#ifndef BOOST
             auto& object_pool = ObjectPool<CalcResult>::getSingletone();
+#endif
             for (size_t i = first_idx; i < last_idx; ++i) {
                 auto calc_res = move(results[i]);
                 file_.write(reinterpret_cast<char *>(calc_res->line.data()),
                             calc_res->line.size() * sizeof(double));
+#ifndef BOOST
                 object_pool.deallocate(move(calc_res));
+#endif
             }
             first_idx = last_idx;
         }
